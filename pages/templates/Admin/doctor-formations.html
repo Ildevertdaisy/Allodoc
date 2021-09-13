@@ -23,13 +23,15 @@
 					<li>
 						<h4>{{ formation.procurement_year}}</h4>
 						<h1>{{formation.qualification_name}} à l'institut {{formation.institute_name}}</h1>
+						<a href="{%  url 'pages:edit_training' formation.pk %}" class="btn btn-info">Editer la formation</a>
+						<a href="{%  url 'pages:delete_training' formation.pk %}" class="btn btn-danger">Supprimer la formation</a>
 					</li>
 					{% endfor %}
 				</ul>
 			</div>
 		</div>
 		<!-- /box_general-->
-		<nav aria-label="...">
+		<!-- <nav aria-label="...">
 			<ul class="pagination pagination-sm add_bottom_30">
 				<li class="page-item disabled">
 					<a class="page-link" href="#" tabindex="-1">Previous</a>
@@ -41,7 +43,7 @@
 					<a class="page-link" href="#">Next</a>
 				</li>
 			</ul>
-		</nav>
+		</nav> -->
 		<!-- /pagination-->
 	  </div>
 	  <!-- /container-fluid-->

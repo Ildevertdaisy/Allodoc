@@ -25,9 +25,9 @@ import os
 SECRET_KEY = 'django-insecure-@cv(!&b#$1r=xz#s+aagarn)w!ea%92@y8cqx#bqvqzqcfh#$c'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['protected-ravine-70784.herokuapp.com', 'allodoc.com']
+ALLOWED_HOSTS = []
 
 
 # Application definition

@@ -49,7 +49,6 @@ def doctor_list_grid(request):
         doctors = paginator.page(page.num_pages)       
     return render(request, 'Details/grid-list.html', {'page': page, 'doctors': doctors})
 
-
 def doctor(request, first_name, last_name):
     return render(request, "Details/doctor.html")
 
@@ -93,7 +92,6 @@ def doctor_profile(request):
         profile_form = ProfileEditForm(instance=request.user.doctor)
     return render(request, 'Admin/doctor-profile.html', {'user_form': user_form, 'profile_form': profile_form})                   
 
-
 @login_required
 def doctor_qualification(request):
     if request.method == 'POST':
@@ -116,9 +114,30 @@ def doctor_formations(request):
     return render(request, 'Admin/doctor-formations.html', {'formations': formations})   
 
 @login_required
+def delete_training(request, pk):
+    training = Qualification.objects.get(id=pk)
+    training.delete()
+    return redirect("/doctor-formations")
+
+@login_required
+def edit_training(request, pk):
+    training = Qualification.objects.get(id=pk)
+    form =  QualificationForm(instance=training)
+    if request.method == 'POST':
+        form = QualificationForm(request.POST, instance=training)
+        if form.is_valid():
+            form.save()
+            return redirect("/doctor-formations")
+    context = {
+         "form": form,
+         "training": training
+     }
+    return render(request, "Admin/doctor-edit-formation.html", context) 
+
+@login_required
 def doctor_availability(request):
     if request.method == 'POST':
-        doctor_availibity_form = DoctorAvailibityForm(data=request.POST)
+        doctor_availibity_form = DoctorAvailibityForm(request.POST)
         if doctor_availibity_form.is_valid():
             instance = doctor_availibity_form.save(commit=False)
             instance.doctor = request.user.doctor
@@ -153,16 +172,18 @@ def booking(request, id, name):
     doctor = Doctor.objects.get(user__first_name=name)
     availibity = DoctorAvailibity.objects.get(id=id)
     availibity.is_reserved = False
-    availibity.save()
     if request.method == 'POST':
-        patient_form = PatientForm(data=request.POST)
+        patient_form = PatientForm(request.POST, request.FILES)
         if patient_form.is_valid():
             patient = patient_form.save(commit=False)
             start_date = availibity.start_date
             end_date = availibity.end_date
+            print(start_date)
+            print(end_date)
             patient.save()
+            availibity.save()
             Appointment.objects.create(doctor=doctor, patient=patient, start_date=start_date, end_date=end_date)
-            return render(request, 'Welcome/reservation.html')
+            return redirect('pages:booking_confirmation')
     else:
         patient_form = PatientForm()
     return render(request, 'Details/new-booking.html', {'patient_form':patient_form, 'doctor': doctor, 'availibity': availibity})
@@ -179,3 +200,29 @@ def appointments(request):
 def availabilities(request):
     availabilities = DoctorAvailibity.objects.filter(doctor=request.user.doctor)
     return render(request, 'Admin/availabilities.html', {'availabilities': availabilities})
+
+@login_required
+def edit_availability(request, pk):
+    availability = DoctorAvailibity.objects.get(id=pk)
+    doctor_availibity_form = DoctorAvailibityForm(instance=availability)
+    if request.method == 'POST':
+        doctor_availibity_form = DoctorAvailibityForm(request.POST, instance=availability)
+        if doctor_availibity_form.is_valid():
+            doctor_availibity_form.save()
+            return redirect("/availabilities")
+    context = {
+        'availability': availability,
+        'doctor_availibity_form': doctor_availibity_form
+    }        
+    return render(request, 'Admin/edit-avaibiity.html', context)
+
+@login_required
+def cancel_availability(request, pk):
+    availability = DoctorAvailibity.objects.get(id=pk)
+    availability.delete()
+    return redirect("/availabilities")
+
+def error_404(request, exception):
+    return render(request,'404/404.html')
+
+

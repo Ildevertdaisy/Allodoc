@@ -22,11 +22,16 @@ urlpatterns = [
     path('doctor-new-qualification/', views.doctor_qualification, name='doctor_qualification'),
     path('doctor-formations/', views.doctor_formations, name='doctor_formations'),
     path('doctor-availability/', views.doctor_availability, name='doctor_availability'),
+    path('qualification-delete/<int:pk>/', views.delete_training, name='delete_training'),
+    path('qualifcation-edit/<int:pk>', views.edit_training, name='edit_training'),
     #Vues d'informations du site
     path('contact-us/', views.contact_us, name='contact_us'),
     path('help/', views.faq, name='faq'),
     #Vues des rendez-vous
     path('appointment/<int:id>/<name>/', views.booking, name='appointment'),
     path('appointments/', views.appointments, name='appointments'),
-    path('availabilities/', views.availabilities, name='availabilities'), 
+    path('availabilities/', views.availabilities, name='availabilities'),
+    path('edit-availability/<int:pk>', views.edit_availability, name='edit_availability'),
+    path('cancel-availability/<int:pk>', views.cancel_availability, name='cancel_availability'),
+    path('booking-confirmation/', views.booking_confirmation, name='booking_confirmation'),
 ]

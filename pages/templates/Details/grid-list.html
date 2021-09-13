@@ -31,17 +31,6 @@
 		<div class="container">
 			<ul class="clearfix">
 				<li>
-					<h6>Type</h6>
-					<div class="switch-field">
-						<input type="radio" id="all" name="type_patient" value="all" checked>
-						<label for="all">Tout</label>
-						<input type="radio" id="doctors" name="type_patient" value="doctors">
-						<label for="doctors">Docteurs</label>
-						<input type="radio" id="clinics" name="type_patient" value="clinics">
-						<label for="clinics">Cliniques</label>
-					</div>
-				</li>
-				<li>
 					<h6>Layout</h6>
 					<div class="layout_view">
 						<a href="#0" class="active"><i class="icon-th"></i></a>
@@ -71,11 +60,15 @@
 					<div class="col-md-6">
 						<div class="box_list wow fadeIn">
 							<a href="#0" class="wish_bt"></a>
+							{% if doctor.photo %}
 							<figure>
 								<a href="{% url 'pages:doctor_detail' doctor.id %}"><img src="{{doctor.photo.url}}" class="img-fluid" alt="">
 									<div class="preview"><span>En savoir plus</span></div>
 								</a>
 							</figure>
+							{% else %}
+							<a href="detail-page.html"><img src="http://via.placeholder.com/565x565.jpg" class="img-fluid" alt="">
+							{% endif %}
 							<div class="wrapper">
 								<small>
 									Spécialité(s)
@@ -117,7 +110,7 @@
 
 {% block scripts %}
 	<!-- SPECIFIC SCRIPTS -->
-	<script src="http://maps.googleapis.com/maps/api/js"></script>
-    <script src="{% static 'js/map_listing.js' %}"></script>
+	<!-- <script src="http://maps.googleapis.com/maps/api/js"></script> -->
+    <script src="{% static 'js/map_listing.js' %}"></script> 
     <script src="{% static 'js/infobox.js' %}"></script>
 {% endblock %}

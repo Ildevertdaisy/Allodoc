@@ -12,6 +12,7 @@ urlpatterns = [
     
 ]
 
+handler404 = 'pages.views.error_404'
 # Servir les fichiers multimédia en mode développement
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

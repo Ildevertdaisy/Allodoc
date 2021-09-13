@@ -7,6 +7,8 @@ from doctors.models import Doctor, City, State, Zip, Qualification, DoctorAvaili
 
 from patients.models import Patient
 
+import datetime
+
 # Formulaires réliés aux inscriptions et aux profiles des medécins
 
 class UserRegistrationForm(forms.ModelForm):
@@ -33,8 +35,9 @@ class ProfileEditForm(forms.ModelForm):
         model = Doctor
         fields = ('specializations', 'praticing_from', 'professional_statement', 'sex', 'photo', 'phone', 'street', 'zip', 'state', 'city')
         labels = {'specializations':'Spécialisation(s)', 'praticing_from': 'Date de début', 'sex':'Sexe', 'photo': 'Image de profil','phone':'Numéro de téléphone', 'street':'Rue', 'zip':'Code postal', 'state':'Département','city':'Ville'}
+        YEARS = range(1960, 2022)
         widgets = {
-            'practicing_form': forms.DateField(),
+            'practicing_form': forms.SelectDateWidget(empty_label=('Year', 'Month', 'Day'), years=YEARS)
         }
 
 class QualificationForm(forms.ModelForm):
@@ -42,13 +45,17 @@ class QualificationForm(forms.ModelForm):
         model = Qualification
         fields = ('qualification_name','institute_name', 'procurement_year')
         labels = {'qualification_name':'Nom du diplôme','institute_name':'Nom de l\'institut', 'procurement_year':'Date de l\'obtention'}
-        widgets = {'procurement_year': forms.SelectDateWidget()}
+        YEARS = range(1960, 2022)
+        widgets = {'procurement_year': forms.SelectDateWidget(empty_label=('Year', 'Month', 'Day'), years=YEARS)}
+        
 class DoctorAvailibityForm(forms.ModelForm):
     class Meta:
         model = DoctorAvailibity
         fields = ('name','start_date', 'end_date')
         labels = {'name':'Nom','start_date':'Date de début','end_date':'Date de fin'}
-        widgets = {'start_date': forms.SelectDateWidget()}
+        YEARS = range(1960, 2022)
+        widgets = {'start_date': forms.SelectDateWidget(empty_label=('Year', 'Month', 'Day'), years=YEARS),
+                   'end_date':forms.SelectDateWidget(empty_label=('Year', 'Month', 'Day'), years=YEARS)}
 
 #Formulaires du patient
 class PatientForm(forms.ModelForm):
